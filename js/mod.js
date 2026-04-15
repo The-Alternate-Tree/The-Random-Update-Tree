@@ -1,23 +1,27 @@
 let modInfo = {
-	name: "The ??? Tree",
-	author: "nobody",
+	name: "The Random Updates Tree",
+	author: "liam",
 	pointsName: "points",
 	modFiles: ["layers.js", "tree.js"],
 
 	discordName: "",
 	discordLink: "",
-	initialStartPoints: new Decimal (10), // Used for hard resets and new players
-	offlineLimit: 1,  // In hours
+	initialStartPoints: new Decimal (0), // Used for hard resets and new players
+	offlineLimit: 0,  // In hours
 }
 
 // Set your version in num and name
 let VERSION = {
-	num: "0.0",
+	num: "1.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
-	<h3>v0.0</h3><br>
+<h3><br><br>v1.1</h3><br>
+		1 layer, 4 upgrades, and made the game.<br>
+		endgame: 50 prestige points<br>
+
+	<h3><br><br>v0.0</h3><br>
 		- Added things.<br>
 		- Added stuff.`
 
@@ -41,8 +45,16 @@ function getPointGen() {
 	if(!canGenPoints())
 		return new Decimal(0)
 
-	let gain = new Decimal(1)
-	return gain
+base = new Decimal(1)
+mult = new Decimal(1)
+exp = new Decimal(1)
+
+if (hasUpgrade('p', 11)) base = base.plus(1)
+if (hasUpgrade('p', 12)) mult = mult.times(2)
+if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
+if (hasUpgrade('p', 14)) base = base.plus(upgradeEffect('p', 14))
+
+	return base.times(mult).pow(exp)
 }
 
 // You can add non-layer related variables that should to into "player" and be saved here, along with default values

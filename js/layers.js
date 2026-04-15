@@ -6,7 +6,7 @@ addLayer("p", {
         unlocked: true,
 		points: new Decimal(0),
     }},
-    color: "#4BDC13",
+    color: "#138cdc",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
     resource: "prestige points", // Name of prestige currency
     baseResource: "points", // Name of resource prestige is based on
@@ -18,11 +18,54 @@ addLayer("p", {
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        exp = new Decimal(1)
+        return exp
     },
-    row: 0, // Row the layer is in on the tree (0 is the first row)
+    row: 1, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
-    layerShown(){return true}
+    layerShown(){return true},
+
+      upgrades: {
+
+            11: {
+                title: "P1 - Too Slow",
+                description: "Gain 1 extra point per second.",
+                cost: new Decimal(1),
+                unlocked() { return player[this.layer].unlocked }, // The upgrade is only visible when this is true
+               
+            },
+            12: {
+                title: "P2 - Better Generation",
+                description: "Double point gain.",
+                cost: new Decimal(3),
+                unlocked() { return hasUpgrade('p', 11) }, // The upgrade is only visible when this is true
+               
+            },
+            13: {
+                title: "P3 - Generic Enough?",
+                description: "Prestige points boost points.",
+                cost: new Decimal(6),
+                unlocked() { return hasUpgrade('p', 12) }, // The upgrade is only visible when this is true
+                effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
+                    let ret = player.p.points.add(1).pow(0.5)
+                    if (ret.gte("1e400")) ret = ret.sqrt().times("1e200")
+                    return ret;
+                },
+                effectDisplay() { return format(this.effect())+"x" }, // Add formatting to the effect
+            },
+            14: {
+                title: "P4 - Upgraded Base",
+                description: "Prestige upgrades bought add to point gain.",
+                cost: new Decimal(20),
+                unlocked() { return hasUpgrade('p', 13) }, // The upgrade is only visible when this is true
+                effect() { // Calculate bonuses from the upgrade. Can return a single value or an object with multiple values
+                    let ret = player.p.upgrades.length
+                    return new Decimal(ret).pow(0.7);
+                },
+                effectDisplay() { return format(this.effect())+"" }, // Add formatting to the effect
+            },
+             
+        },
 })
