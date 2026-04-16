@@ -94,6 +94,7 @@ addLayer("a", {
         mult = new Decimal(1)
         return mult
     },
+    branches: ['p'],
     gainExp() { // Calculate the exponent on main currency from bonuses
         exp = new Decimal(1)
         return exp
@@ -105,10 +106,29 @@ addLayer("a", {
     layerShown(){return true},
 
       effect() {
-        let eff = player.a.points.add(1).pow(1.7).minus(1)
+        let eff = player.a.points.add(0)
+        if (hasMilestone('a', 2)) eff = eff.pow(1.4)
         return eff
       },
       effectDescription() {
         return "adding " +format(tmp.a.effect) + " to base point gain"
       },
+      milestones: {
+    1: {
+        requirementDescription: "(1) 1 addition",
+        effectDescription: "Gain 1.75x more points.",
+        done() { return player.a.points.gte(1) }
+    },
+     2: {
+        requirementDescription: "(2) 4 addition",
+        effectDescription: "Addition effect ^1.4.",
+        done() { return player.a.points.gte(4) }
+    },
+    3: {
+        requirementDescription: "(3) 10 addition",
+        effectDescription: "Raise point gain ^1.1.",
+        done() { return player.a.points.gte(10) }
+    },
+    
+},
 })

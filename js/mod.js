@@ -12,11 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "2.1",
+	num: "2.2",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3><br><br>v2.2</h3><br>
+		added 3 milestones, nerfed addition effect, and added branches.<br>
+		endgame: 20 addition<br>
 <h3><br><br>v2.1</h3><br>
 		added addition, an upgrade, and addition adds base point gain.<br>
 		endgame: 5 addition<br>
@@ -58,6 +61,9 @@ if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
 if (hasUpgrade('p', 14)) base = base.plus(upgradeEffect('p', 14))
 if (hasUpgrade('p', 15)) mult = mult.times(3)
 base = base.add(tmp.a.effect)
+if (hasMilestone('a', 1)) mult = mult.times(1.75)
+if (hasMilestone('a', 3)) exp = exp.times(1.1)
+
 	return base.times(mult).pow(exp)
 }
 
