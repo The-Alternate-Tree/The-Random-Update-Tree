@@ -12,11 +12,14 @@ let modInfo = {
 
 // Set your version in num and name
 let VERSION = {
-	num: "1.1",
+	num: "2.1",
 	name: "Literally nothing",
 }
 
 let changelog = `<h1>Changelog:</h1><br>
+<h3><br><br>v2.1</h3><br>
+		added addition, an upgrade, and addition adds base point gain.<br>
+		endgame: 5 addition<br>
 <h3><br><br>v1.1</h3><br>
 		1 layer, 4 upgrades, and made the game.<br>
 		endgame: 50 prestige points<br>
@@ -53,7 +56,8 @@ if (hasUpgrade('p', 11)) base = base.plus(1)
 if (hasUpgrade('p', 12)) mult = mult.times(2)
 if (hasUpgrade('p', 13)) mult = mult.times(upgradeEffect('p', 13))
 if (hasUpgrade('p', 14)) base = base.plus(upgradeEffect('p', 14))
-
+if (hasUpgrade('p', 15)) mult = mult.times(3)
+base = base.add(tmp.a.effect)
 	return base.times(mult).pow(exp)
 }
 

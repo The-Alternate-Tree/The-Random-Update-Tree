@@ -66,6 +66,49 @@ addLayer("p", {
                 },
                 effectDisplay() { return format(this.effect())+"" }, // Add formatting to the effect
             },
-             
+             15: {
+                title: "P5 - Even Better Generation",
+                description: "Triple point gain.",
+                cost: new Decimal(50),
+                unlocked() { return hasUpgrade('p', 14) }, // The upgrade is only visible when this is true
+               
+            },
         },
+})
+addLayer("a", {
+    name: "addition", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "A", // This appears on the layer's node. Default is the id with the first letter capitalized
+    position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
+    startData() { return {
+        unlocked: false,
+		points: new Decimal(0),
+    }},
+    color: "#db5050",
+    requires: new Decimal(3000), // Can be a function that takes requirement increases into account
+    resource: "addition", // Name of prestige currency
+    baseResource: "points", // Name of resource prestige is based on
+    baseAmount() {return player.points}, // Get the current amount of baseResource
+    type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
+    exponent: 0.5, // Prestige currency exponent
+    gainMult() { // Calculate the multiplier for main currency from bonuses
+        mult = new Decimal(1)
+        return mult
+    },
+    gainExp() { // Calculate the exponent on main currency from bonuses
+        exp = new Decimal(1)
+        return exp
+    },
+    row: 2, // Row the layer is in on the tree (0 is the first row)
+    hotkeys: [
+        {key: "a", description: "A: Reset for addition", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
+    ],
+    layerShown(){return true},
+
+      effect() {
+        let eff = player.a.points.add(1).pow(1.7).minus(1)
+        return eff
+      },
+      effectDescription() {
+        return "adding " +format(tmp.a.effect) + " to base point gain"
+      },
 })
